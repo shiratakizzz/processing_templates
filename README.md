@@ -1,55 +1,127 @@
 # processing_templates
 
-TODO: ここに自分の作成したprocessing codeの簡単な内容を紹介してください．
-
-## Installation
-
-TODO: この項目はclone, pushが終了したら消してください．
-
-githubでdaddygongon/processing_templatesをforkしてください．
-その後，
-```
-> mkdir /home/user_name
-> ssh-keygen
-> ssh-copy-id user_name@host_url
-> cd e:
-> git clone git@github.com:USER_NAME/processing_templates.git
-```
-でcloneしてください．
-
-そこへprocessing codeをcopyした後，
-```
-> git add -A
-> git commit -m 'first commit'
-> git push origin master
-```
-してください．
-: git remote -v
-で出てくるアドレスをLUNAに提出してください．
-このファイル(README.md)の修正も忘れずに．
+TODO: ボール動かすゲームです。
 
 ## Usage
 
-TODO: ここに使い方を書いてください．
+TODO: 矢印が動く物体に当たらないように、ボールをゴール地点まで持って行きます。
+付いてくるボールに当たってもいけません。2回当たるとgame overです。
 
 ## Code review
 
-TODO: ここにcodeの概要と，どのような意図で作成したかを書いてください．
-どこの誰のコードを基にして書いたかの引用を忘れずに．
+TODO:void setup() {
+  size(1200, 600);
+  strokeWeight(2);
+  textSize(50);
+  textAlign(CENTER);
+}
 
-sampleをそれぞれのdirectoryに置いています．
+float mx;
+float my;
+float easing = 0.02;
+int radius =30;
+int inner= radius;
+int count=0;
+boolean flag = false;
+float x=radius;
+float y=radius;
+float z=radius;
+float speed1=12;
+float speed2=15;
+float speed3=10;
+void draw() { 
 
-今見ている，README.mdはmark downで書いています．
+  background(223);
+  x+=speed1;
+  if (x>width-radius) {
+    x=-radius;
+  }
+  fill (250, 0, 0);//red
+  rect(x-600, 90, 200, 50);
+  rect(x, 90, 200, 50);
+  rect(600+x, 90, 200, 50);
 
-robotx_class/REAME.orgはorg-modeで書いています．コードも綺麗にカラー表示されているでしょう．
+  y+=speed2;
+  if (y>width+radius) {
+    y=radius;
+  }
 
-もちろんmark downでもcodeを綺麗に表示できます．
-書き方は，googleで調べてください．
+  fill(0, 255, 0); //green
+  rect(800-y, 200, 500, 20);
 
-``` java
-rect(0, 0, 10, 10);
-```
-なんかです．
+  z+=speed3;
+  if (z>width+radius) {
+    z=radius;
+  }
+
+
+  fill(255, 255, 0);//yellow
+  rect(-1000+z, 300, 20, 100);
+  rect(-800+z, 300, 20, 100);
+  rect(-600+z, 300, 20, 100);
+  rect(-400+z, 300, 20, 100);
+  rect(-200+z, 300, 20, 100);
+  rect(z, 300, 20, 100);
+  rect(200+z, 300, 20, 100);
+  rect(400+z, 300, 20, 100);
+  rect(600+z, 300, 20, 100);
+  rect(800+z, 300, 20, 100);
+  rect(1000+z, 300, 20, 100);
+  rect(1200+z, 300, 20, 100);
+
+
+  if (abs(mouseX - mx) > 0.1) {
+    mx = mx + (mouseX - mx) * easing;
+  }
+  if (abs(mouseY - my) > 0.1) {
+    my = my + (mouseY- my) * easing;
+  }
+  mx = constrain(mx, inner, width - inner);
+  my = constrain(my, inner, height - inner);
+  fill(255, 255, 255);
+  ellipse(mx, my, radius, radius);
+
+  text("start", 600, 40);
+  text("goal", 600, 580);
+ 
+  if (my<60) {
+
+    text("avoid the objects and reach the goal", 600, 300);
+  }
+
+  if (my>540) {
+
+    fill(184, 98, 99);
+    text("finish", 600, 300);
+    noLoop();
+  }
+  color c = get(mouseX, mouseY); 
+  if (c != -2105377 && c != -16777216 && flag == false) 
+  {
+    count++; 
+    flag = true;
+    fill(0);
+     text("Miss", mx+20,my+20, 300);
+  }
+  if (c == -2105377 && flag == true) 
+  {
+    flag = false;
+  }
+  text(count, 50, 560);
+  
+if(count>1)
+{
+  textSize(100);
+  fill(255,0,0);
+  text("GameOver",600,300);
+  noLoop();
+}
+}
+
+ゲームを作ってみたくて一番シンプルそうなものを考えました。
+
+引用
+Constrain.  https://processing.org/examples/constrain.html
 
 ## License
 
